@@ -10,10 +10,15 @@ gastoForm.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const gastoValue = Number.parseInt(gasto.value);
+  gasto.value = ""
 
   gastos.registrarGasto(gastoValue)
-  const gastoRegistrado = gastos.obtenerGastos()[0]
+  const gastosRegistrados = gastos.obtenerGastos()
 
-  gastosDiv.innerHTML = "<p>" + gastoRegistrado + "</p>";
+  gastosDiv.innerHTML = "<ul>"
+  gastosRegistrados.forEach((gastoRegistrado) => {
+    gastosDiv.innerHTML += "<li>" + gastoRegistrado + "</li>"
+  })
+  gastosDiv.innerHTML += "</ul>"
 
 });
