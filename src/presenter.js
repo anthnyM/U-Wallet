@@ -17,7 +17,7 @@ gastoForm.addEventListener("submit", (event) => {
 
   gastosDiv.innerHTML = "<ul>"
   gastosRegistrados.forEach((gastoRegistrado) => {
-    gastosDiv.innerHTML += "<li>" + gastoRegistrado + "</li>"
+    gastosDiv.innerHTML += "<li>- Bs: " + gastoRegistrado + "</li>"
   })
   gastosDiv.innerHTML += "</ul>"
 

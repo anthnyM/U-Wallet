@@ -6,14 +6,16 @@
   <title>U-Wallet</title>
 </head>
 <body>
-  <h1>Registrar Gasto</h1>
+  <h1>U-Wallet</h1>
+  <h2>Registrar gasto</h2>
   <form id="gasto-form">
     <label for="gasto">Bs: </label>
-    <input type="number" id="gasto"/>
+    <input type="number" id="gasto" min="0"/>
     <input type="submit" value="Registrar" id="registrar-gasto" />
   </form>
+  <h3>Historial gastos</h3>
   <div id="gastos-div"></div>
-
+  
   <script type="module" src="./src/presenter.js"></script>
 </body>
 </html>
