@@ -3,8 +3,8 @@ class Ingresos {
         this.ingresos = [];
     }
 
-    registrarIngreso(ingreso) {
-        this.ingresos.push(ingreso);
+    registrarIngreso(ingreso, descripcion) {
+        this.ingresos.push({ valor: ingreso, descripcion: descripcion });
     }
 
     obtenerIngresos() {

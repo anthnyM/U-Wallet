@@ -7,13 +7,17 @@
 </head>
 <body>
     <h1>U-Wallet</h1>
+
     <h2>Registrar ingreso</h2>
     <form id="ingreso-form">
-    <label for="ingreso">Bs: </label>
-    <input type="number" id="ingreso" min="0" required />
-    <input type="submit" value="Registrar" id="registrar-ingreso" />
+        <label for="ingreso">Bs: </label>
+        <input type="number" id="ingreso" min="0" required />
+        <label for="descripcion-ingreso">Descripción: </label>
+        <input type="text" id="descripcion-ingreso" required />
+        <input type="submit" value="Registrar ingreso" />
     </form>
-    <h3>Historial ingresos</h3>
+
+    <h3>Historial de ingresos</h3>
     <div id="ingresos-div"></div>
 
     <script type="module" src="./src/presenter.js"></script>

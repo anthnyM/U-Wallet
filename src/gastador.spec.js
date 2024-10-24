@@ -1,24 +1,33 @@
 import Gastos from "./Gastos";
 
-describe("Registrar gasto", () => {
+describe("Gastos", () => {
+    let gastos;
 
-    const gastos = new Gastos()
-    const gasto1 = 50
-    const gasto2 = 100
-
-    gastos.registrarGasto(gasto1)
-    gastos.registrarGasto(gasto2)
-    
-    let gastoRegistrado = gastos.obtenerGastos()[0]
-    
-    it("Debería registrar un gasto", () => {
-      expect(gastoRegistrado).toEqual(gasto1);
+    beforeEach(() => {
+        gastos = new Gastos();
     });
 
-    
-    let gastosRegistrados = gastos.obtenerGastos()
+    test("Debería registrar un gasto con su descripción", () => {
+        const valor = 50;
+        const descripcion = "Compra de comida";
 
-    it("Debería registrar dos gastos", () => {
-        expect(gastosRegistrados).toEqual([gasto1,gasto2]);
-      });
-  });
+        gastos.registrarGasto(valor, descripcion);
+        const gastosRegistrados = gastos.obtenerGastos();
+
+        expect(gastosRegistrados.length).toBe(1);
+        expect(gastosRegistrados[0]).toEqual({ valor, descripcion });
+    });
+
+    test("Debería registrar múltiples gastos con sus descripciones", () => {
+        const gasto1 = { valor: 50, descripcion: "Compra de comida" };
+        const gasto2 = { valor: 100, descripcion: "Transporte" };
+
+        gastos.registrarGasto(gasto1.valor, gasto1.descripcion);
+        gastos.registrarGasto(gasto2.valor, gasto2.descripcion);
+
+        const gastosRegistrados = gastos.obtenerGastos();
+
+        expect(gastosRegistrados.length).toBe(2);
+        expect(gastosRegistrados).toEqual([gasto1, gasto2]);
+    });
+});
