@@ -4,8 +4,8 @@
   "description": "",
   "default": "index.html",
   "scripts": {
-    "start": "parcel Gastos.html --no-cache",
-    "build": "parcel build Gastos.html --no-cache",
+    "start": "parcel index.html --no-cache",
+    "build": "parcel build index.html --no-cache",
     "test": "jest --watch",
     "test-once": "jest --verbose --coverage",
     "cypress": "cypress open",
