@@ -23,6 +23,21 @@ const actualizarSaldo = () => {
     saldoDiv.innerText = `Saldo actual: Bs ${saldoActual}`;
 };
 
+document.getElementById('login-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    if (username === 'admin' && password === 'password') {
+        document.getElementById('login-div').style.display = 'none'; 
+        document.getElementById('main').style.display = 'block'; 
+    } else {
+        document.getElementById('login-error').style.display = 'block'; 
+    }
+  });
+
+
+
 gastoForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
