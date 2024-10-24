@@ -52,3 +52,10 @@ it("Verificar visibilidad de login", ()=> {
     cy.get("#main").should("not.be.visible");
 });
 
+it("Verificar contraseña invalida", ()=> {
+    cy.visit("/");
+    cy.get("#username").type("123");
+    cy.get("#password").type("123");
+    cy.get("#login-form").submit();
+    cy.get("#login-error").should("contain","Credenciales no validas. Intentalo de nuevo.");
+});

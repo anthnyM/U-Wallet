@@ -23,6 +23,13 @@ const actualizarSaldo = () => {
     saldoDiv.innerText = `Saldo actual: Bs ${saldoActual}`;
 };
 
+document.getElementById('login-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    document.getElementById('login-error').style.display = 'block'; 
+  });
+
+
+
 gastoForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
