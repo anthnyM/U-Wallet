@@ -59,3 +59,11 @@ it("Verificar contraseña invalida", ()=> {
     cy.get("#login-form").submit();
     cy.get("#login-error").should("contain","Credenciales no validas. Intentalo de nuevo.");
 });
+
+it("Verificar login valido", ()=> {
+    cy.visit("/");
+    cy.get("#username").type("admin");
+    cy.get("#password").type("password");
+    cy.get("#login-form").submit();
+    cy.get("#main").should("be.visible");
+});

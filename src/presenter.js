@@ -25,7 +25,15 @@ const actualizarSaldo = () => {
 
 document.getElementById('login-form').addEventListener('submit', function(event) {
     event.preventDefault();
-    document.getElementById('login-error').style.display = 'block'; 
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    if (username === 'admin' && password === 'password') {
+        document.getElementById('login-div').style.display = 'none'; 
+        document.getElementById('main').style.display = 'block'; 
+    } else {
+        document.getElementById('login-error').style.display = 'block'; 
+    }
   });
 
 
