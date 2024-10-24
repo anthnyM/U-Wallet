@@ -1,61 +1,64 @@
+// presenter.js
 import Gastos from "./Gastos";
 import Ingresos from "./Ingresos";
 
+const gastos = new Gastos();
+const ingresos = new Ingresos();
+
+const gastoInput = document.querySelector("#gasto");
+const descripcionGastoInput = document.querySelector("#descripcion-gasto");
 const gastoForm = document.querySelector("#gasto-form");
+const gastosDiv = document.querySelector("#gastos-div");
+
+const ingresoInput = document.querySelector("#ingreso");
+const descripcionIngresoInput = document.querySelector("#descripcion-ingreso");
 const ingresoForm = document.querySelector("#ingreso-form");
+const ingresosDiv = document.querySelector("#ingresos-div");
+const saldoDiv = document.querySelector("#saldo-actual");
 
-if (gastoForm) {
-    const gasto = document.querySelector("#gasto");
-    const descripcionGasto = document.querySelector("#descripcion-gasto");
-    const gastosDiv = document.querySelector("#gastos-div");
-    const gastos = new Gastos();
+const actualizarSaldo = () => {
+    const totalGastos = gastos.obtenerGastos().reduce((total, gasto) => total + gasto.valor, 0);
+    const totalIngresos = ingresos.obtenerIngresos().reduce((total, ingreso) => total + ingreso.valor, 0);
+    const saldoActual = totalIngresos - totalGastos;
+    saldoDiv.innerText = `Saldo actual: Bs ${saldoActual}`;
+};
 
-    function actualizarHistorialGastos() {
-        const gastosRegistrados = gastos.obtenerGastos();
-        gastosDiv.innerHTML = "<ul>";
-        gastosRegistrados.forEach((gastoRegistrado) => {
-            gastosDiv.innerHTML += `<li>- Bs: ${gastoRegistrado.valor} | ${gastoRegistrado.descripcion}</li>`;
-        });
-        gastosDiv.innerHTML += "</ul>";
-    }
+gastoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-    gastoForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const gastoValue = Number.parseInt(gasto.value);
-        const descripcionValue = descripcionGasto.value;
+    const gastoValue = Number.parseInt(gastoInput.value);
+    const descripcionGastoValue = descripcionGastoInput.value;
+    gastos.registrarGasto(gastoValue, descripcionGastoValue);
 
-        gasto.value = "";
-        descripcionGasto.value = "";
+    gastoInput.value = "";
+    descripcionGastoInput.value = "";
 
-        gastos.registrarGasto(gastoValue, descripcionValue);
-        actualizarHistorialGastos();
+    const gastosRegistrados = gastos.obtenerGastos();
+    gastosDiv.innerHTML = "<ul>";
+    gastosRegistrados.forEach((gasto) => {
+        gastosDiv.innerHTML += `<li>- Bs: ${gasto.valor} (${gasto.descripcion})</li>`;
     });
-}
+    gastosDiv.innerHTML += "</ul>";
 
-if (ingresoForm) {
-    const ingreso = document.querySelector("#ingreso");
-    const descripcionIngreso = document.querySelector("#descripcion-ingreso");
-    const ingresosDiv = document.querySelector("#ingresos-div");
-    const ingresos = new Ingresos();
+    actualizarSaldo();
+});
 
-    function actualizarHistorialIngresos() {
-        const ingresosRegistrados = ingresos.obtenerIngresos();
-        ingresosDiv.innerHTML = "<ul>";
-        ingresosRegistrados.forEach((ingresoRegistrado) => {
-            ingresosDiv.innerHTML += `<li>- Bs: ${ingresoRegistrado.valor} | ${ingresoRegistrado.descripcion}</li>`;
-        });
-        ingresosDiv.innerHTML += "</ul>";
-    }
+ingresoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-    ingresoForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const ingresoValue = Number.parseInt(ingreso.value);
-        const descripcionValue = descripcionIngreso.value;
+    const ingresoValue = Number.parseInt(ingresoInput.value);
+    const descripcionIngresoValue = descripcionIngresoInput.value;
+    ingresos.registrarIngreso(ingresoValue, descripcionIngresoValue);
 
-        ingreso.value = "";
-        descripcionIngreso.value = "";
+    ingresoInput.value = "";
+    descripcionIngresoInput.value = "";
 
-        ingresos.registrarIngreso(ingresoValue, descripcionValue);
-        actualizarHistorialIngresos();
+    const ingresosRegistrados = ingresos.obtenerIngresos();
+    ingresosDiv.innerHTML = "<ul>";
+    ingresosRegistrados.forEach((ingreso) => {
+        ingresosDiv.innerHTML += `<li>- Bs: ${ingreso.valor} (${ingreso.descripcion})</li>`;
     });
-}
+    ingresosDiv.innerHTML += "</ul>";
+
+    actualizarSaldo();
+});

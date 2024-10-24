@@ -1,14 +1,16 @@
+// Ingresos.js
 class Ingresos {
     constructor() {
         this.ingresos = [];
     }
 
-    registrarIngreso(ingreso, descripcion) {
-        this.ingresos.push({ valor: ingreso, descripcion: descripcion });
+    registrarIngreso(valor, descripcion) {
+        const ingreso = { valor, descripcion }; 
+        this.ingresos.push(ingreso);
     }
 
     obtenerIngresos() {
-        return this.ingresos;
+        return this.ingresos; 
     }
 }
 

@@ -1,33 +1,24 @@
 import Ingresos from "./Ingresos";
 
-describe("Ingresos", () => {
-    let ingresos;
+describe("Registrar ingreso", () => {
+    const ingresos = new Ingresos();
+    const ingreso1 = { valor: 200, descripcion: "Salario" };
+    const ingreso2 = { valor: 150, descripcion: "Venta" };
 
     beforeEach(() => {
-        ingresos = new Ingresos();
+        ingresos.ingresos = [];
     });
 
-    test("Debería registrar un ingreso con su descripción", () => {
-        const valor = 150;
-        const descripcion = "Salario";
-
-        ingresos.registrarIngreso(valor, descripcion);
-        const ingresosRegistrados = ingresos.obtenerIngresos();
-
-        expect(ingresosRegistrados.length).toBe(1);
-        expect(ingresosRegistrados[0]).toEqual({ valor, descripcion });
+    it("Debería registrar un ingreso", () => {
+        ingresos.registrarIngreso(ingreso1.valor, ingreso1.descripcion);
+        const ingresoRegistrado = ingresos.obtenerIngresos()[0];
+        expect(ingresoRegistrado).toEqual(ingreso1);
     });
 
-    test("Debería registrar múltiples ingresos con sus descripciones", () => {
-        const ingreso1 = { valor: 150, descripcion: "Salario" };
-        const ingreso2 = { valor: 200, descripcion: "Venta de productos" };
-
+    it("Debería registrar dos ingresos", () => {
         ingresos.registrarIngreso(ingreso1.valor, ingreso1.descripcion);
         ingresos.registrarIngreso(ingreso2.valor, ingreso2.descripcion);
-
         const ingresosRegistrados = ingresos.obtenerIngresos();
-
-        expect(ingresosRegistrados.length).toBe(2);
         expect(ingresosRegistrados).toEqual([ingreso1, ingreso2]);
     });
 });

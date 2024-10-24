@@ -1,14 +1,16 @@
+
 class Gastos {
     constructor() {
-        this.gastos = [];
+        this.gastos = []; 
     }
 
-    registrarGasto(gasto, descripcion) {
-        this.gastos.push({ valor: gasto, descripcion: descripcion });
+    registrarGasto(valor, descripcion) {
+        const gasto = { valor, descripcion };
+        this.gastos.push(gasto); 
     }
 
     obtenerGastos() {
-        return this.gastos;
+        return this.gastos; 
     }
 }
 
