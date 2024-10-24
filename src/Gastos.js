@@ -3,12 +3,12 @@ class Gastos {
         this.gastos = [];
     }
 
-    registrarGasto(gasto){
-        this.gastos.push(gasto)
+    registrarGasto(gasto, descripcion) {
+        this.gastos.push({ valor: gasto, descripcion: descripcion });
     }
 
-    obtenerGastos(){
-        return this.gastos
+    obtenerGastos() {
+        return this.gastos;
     }
 }
 
