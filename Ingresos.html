@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U-Wallet - Ingresos</title>
+</head>
+<body>
+    <h1>U-Wallet</h1>
+
+    <h2>Registrar ingreso</h2>
+    <form id="ingreso-form">
+        <label for="ingreso">Bs: </label>
+        <input type="number" id="ingreso" min="0" required />
+        <label for="descripcion-ingreso">Descripción: </label>
+        <input type="text" id="descripcion-ingreso" required />
+        <input type="submit" value="Registrar ingreso" />
+    </form>
+
+    <h3>Historial de ingresos</h3>
+    <div id="ingresos-div"></div>
+
+    <script type="module" src="./src/presenter.js"></script>
+</body>
+</html>

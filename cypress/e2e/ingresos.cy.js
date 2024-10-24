@@ -1,6 +1,6 @@
 describe("Gestión de Ingresos", () => {
     it("Debería registrar y mostrar ingresos con descripción", () => {
-        cy.visit("/index.html");
+        cy.visit("/Ingresos.html");
 
         // Registrar primer ingreso
         cy.get("#ingreso").type(3500);
