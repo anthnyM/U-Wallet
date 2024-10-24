@@ -71,7 +71,7 @@ ingresoForm.addEventListener("submit", (event) => {
     const ingresosRegistrados = ingresos.obtenerIngresos();
     ingresosDiv.innerHTML = "<ul>";
     ingresosRegistrados.forEach((ingreso) => {
-        ingresosDiv.innerHTML += `<li>- Bs: ${ingreso.valor} (${ingreso.descripcion})</li>`;
+        ingresosDiv.innerHTML += `<li>+ Bs: ${ingreso.valor} (${ingreso.descripcion})</li>`;
     });
     ingresosDiv.innerHTML += "</ul>";
 
