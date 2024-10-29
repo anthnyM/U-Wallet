@@ -1,9 +1,11 @@
 // presenter.js
 import Gastos from "./Gastos";
 import Ingresos from "./Ingresos";
+import Saldo from "./Saldo";
 
 const gastos = new Gastos();
 const ingresos = new Ingresos();
+const saldo = new Saldo();
 
 const gastoInput = document.querySelector("#gasto");
 const descripcionGastoInput = document.querySelector("#descripcion-gasto");
@@ -14,14 +16,8 @@ const ingresoInput = document.querySelector("#ingreso");
 const descripcionIngresoInput = document.querySelector("#descripcion-ingreso");
 const ingresoForm = document.querySelector("#ingreso-form");
 const ingresosDiv = document.querySelector("#ingresos-div");
-const saldoDiv = document.querySelector("#saldo-actual");
 
-const actualizarSaldo = () => {
-    const totalGastos = gastos.obtenerGastos().reduce((total, gasto) => total + gasto.valor, 0);
-    const totalIngresos = ingresos.obtenerIngresos().reduce((total, ingreso) => total + ingreso.valor, 0);
-    const saldoActual = totalIngresos - totalGastos;
-    saldoDiv.innerText = `Saldo actual: Bs ${saldoActual}`;
-};
+const saldoDiv = document.querySelector("#saldo-actual");
 
 document.getElementById('login-form').addEventListener('submit', function(event) {
     event.preventDefault();
@@ -55,7 +51,8 @@ gastoForm.addEventListener("submit", (event) => {
     });
     gastosDiv.innerHTML += "</ul>";
 
-    actualizarSaldo();
+    saldo.actualizarSaldo(-gastoValue)
+    saldoDiv.innerText = saldo.obtenerSaldo()
 });
 
 ingresoForm.addEventListener("submit", (event) => {
@@ -75,5 +72,6 @@ ingresoForm.addEventListener("submit", (event) => {
     });
     ingresosDiv.innerHTML += "</ul>";
 
-    actualizarSaldo();
+    saldo.actualizarSaldo(ingresoValue)
+    saldoDiv.innerText = saldo.obtenerSaldo()
 });
