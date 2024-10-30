@@ -33,17 +33,6 @@ it.skip("Muestra el ingreso registrado", () => {
     cy.get("#ingresos-div").should("contain", "Venta");
 });
 
-it.skip("Actualiza el saldo al registrar gastos e ingresos", () => {
-    cy.get("#ingreso").type(200);
-    cy.get("#descripcion-ingreso").type("Salario");
-    cy.get("#ingreso-form").submit();
-
-    cy.get("#gasto").type(50);
-    cy.get("#descripcion-gasto").type("Comida");
-    cy.get("#gasto-form").submit();
-
-      cy.get("#saldo-actual").should("contain", "150"); // 200 - 50 = 150
-});
 });
 
 it("Verificar visibilidad de login", ()=> {
@@ -66,4 +55,22 @@ it("Verificar login valido", ()=> {
     cy.get("#password").type("password");
     cy.get("#login-form").submit();
     cy.get("#main").should("be.visible");
+});
+
+it("Actualiza el saldo al registrar gastos e ingresos", () => {
+    cy.visit("/");
+    cy.get("#username").type("admin");
+    cy.get("#password").type("password");
+    cy.get("#login-form").submit();
+    cy.get("#main").should("be.visible");
+
+    cy.get("#ingreso").type(200);
+    cy.get("#descripcion-ingreso").type("Salario");
+    cy.get("#ingreso-form").submit();
+
+    cy.get("#gasto").type(50);
+    cy.get("#descripcion-gasto").type("Comida");
+    cy.get("#gasto-form").submit();
+
+    cy.get("#saldo-actual").should("contain", "150"); // 200 - 50 = 150
 });
