@@ -74,3 +74,18 @@ it("Actualiza el saldo al registrar gastos e ingresos", () => {
 
     cy.get("#saldo-actual").should("contain", "150"); // 200 - 50 = 150
 });
+
+it("Permite editar los datos al seleccionar la opcion Editar", () =>{
+    cy.visit("/");
+    cy.get("#username").type("admin");
+    cy.get("#password").type("password");
+    cy.get("#login-form").submit();
+
+    cy.get("#ingreso").type(200);
+    cy.get("#descripcion-ingreso").type("Salario");
+    cy.get("#ingreso-form").submit();
+
+    cy.get(".editar-btn").first().click();
+    cy.get("#ingreso").should("have.value", "200");
+    cy.get("#descripcion-ingreso").should("have.value", "Salario");
+});

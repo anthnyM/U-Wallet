@@ -57,14 +57,38 @@ gastoForm.addEventListener("submit", (event) => {
     saldoDiv.innerText = saldo.obtenerSaldo();
 });
 
+
 function mostrarIngresos(){
     const ingresosRegistrados = ingresos.obtenerIngresos();
     ingresosDiv.innerHTML = "<ul>";
-    ingresosRegistrados.forEach((ingreso) => {
-        ingresosDiv.innerHTML += `<li>+ Bs: ${ingreso.valor} (${ingreso.descripcion})</li>`;
+    ingresosRegistrados.forEach((ingreso, index) => {
+        ingresosDiv.innerHTML += `
+            <li>
+                - Bs: ${ingreso.valor} (${ingreso.descripcion})
+                <button class="editar-btn" data-index="${index}">Editar</button>
+            </li>
+        `;
     });
     ingresosDiv.innerHTML += "</ul>";
+
+    const editarButtons = document.querySelectorAll(".editar-btn");
+    editarButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const index = event.target.getAttribute("data-index");
+            editarIngreso(index);
+        });
+    });
 }
+
+function editarIngreso(index) {
+    const ingreso = ingresos.obtenerIngresos()[index];
+
+    ingresoInput.value = ingreso.valor;
+    descripcionIngresoInput.value = ingreso.descripcion;
+
+    mostrarIngresos();
+}
+
 
 
 ingresoForm.addEventListener("submit", (event) => {
@@ -78,7 +102,6 @@ ingresoForm.addEventListener("submit", (event) => {
     descripcionIngresoInput.value = "";
 
     mostrarIngresos();
-
     saldo.actualizarSaldo(ingresoValue);
     saldoDiv.innerText = saldo.obtenerSaldo();
 });
