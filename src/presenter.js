@@ -86,7 +86,7 @@ function editarIngreso(index) {
     ingresoInput.value = ingreso.valor;
     descripcionIngresoInput.value = ingreso.descripcion;
 
-    mostrarIngresos();
+    ingresos.eliminarIngreso(index);
 }
 
 

@@ -89,3 +89,25 @@ it("Permite editar los datos al seleccionar la opcion Editar", () =>{
     cy.get("#ingreso").should("have.value", "200");
     cy.get("#descripcion-ingreso").should("have.value", "Salario");
 });
+
+it("Edita los datos al seleccionar la opcion Editar", () =>{
+    cy.visit("/");
+    cy.get("#username").type("admin");
+    cy.get("#password").type("password");
+    cy.get("#login-form").submit();
+
+    cy.get("#ingreso").type(200);
+    cy.get("#descripcion-ingreso").type("Salario");
+    cy.get("#ingreso-form").submit();
+
+    cy.get(".editar-btn").first().click();
+    cy.get("#ingreso").clear();
+    cy.get("#ingreso").type(400);
+    cy.get("#descripcion-ingreso").clear();
+    cy.get("#descripcion-ingreso").type("Regalo");
+    cy.get("#ingreso-form").submit();
+
+    cy.get("#ingresos-div").should("contain", "400");
+    cy.get("#ingresos-div").should("contain", "Regalo");
+
+});
