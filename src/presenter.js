@@ -87,6 +87,7 @@ function editarIngreso(index) {
     descripcionIngresoInput.value = ingreso.descripcion;
 
     ingresos.eliminarIngreso(index);
+    saldo.actualizarSaldo(-ingreso.valor);
 }
 
 
