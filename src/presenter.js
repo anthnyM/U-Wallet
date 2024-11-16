@@ -11,7 +11,6 @@ const gastoInput = document.querySelector("#gasto");
 const descripcionGastoInput = document.querySelector("#descripcion-gasto");
 const gastoForm = document.querySelector("#gasto-form");
 const gastosDiv = document.querySelector("#gastos-div");
-
 const ingresoInput = document.querySelector("#ingreso");
 const descripcionIngresoInput = document.querySelector("#descripcion-ingreso");
 const ingresoForm = document.querySelector("#ingreso-form");
@@ -33,6 +32,15 @@ document.getElementById('login-form').addEventListener('submit', function(event)
   });
 
 
+function mostrarGastos(){
+    const gastosRegistrados = gastos.obtenerGastos();
+    gastosDiv.innerHTML = "<ul>";
+    gastosRegistrados.forEach((gasto) => {
+        gastosDiv.innerHTML += `<li>- Bs: ${gasto.valor} (${gasto.descripcion})</li>`;
+    });
+    gastosDiv.innerHTML += "</ul>";
+}
+
 
 gastoForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -44,16 +52,20 @@ gastoForm.addEventListener("submit", (event) => {
     gastoInput.value = "";
     descripcionGastoInput.value = "";
 
-    const gastosRegistrados = gastos.obtenerGastos();
-    gastosDiv.innerHTML = "<ul>";
-    gastosRegistrados.forEach((gasto) => {
-        gastosDiv.innerHTML += `<li>- Bs: ${gasto.valor} (${gasto.descripcion})</li>`;
-    });
-    gastosDiv.innerHTML += "</ul>";
-
-    saldo.actualizarSaldo(-gastoValue)
-    saldoDiv.innerText = saldo.obtenerSaldo()
+    mostrarGastos();
+    saldo.actualizarSaldo(-gastoValue);
+    saldoDiv.innerText = saldo.obtenerSaldo();
 });
+
+function mostrarIngresos(){
+    const ingresosRegistrados = ingresos.obtenerIngresos();
+    ingresosDiv.innerHTML = "<ul>";
+    ingresosRegistrados.forEach((ingreso) => {
+        ingresosDiv.innerHTML += `<li>+ Bs: ${ingreso.valor} (${ingreso.descripcion})</li>`;
+    });
+    ingresosDiv.innerHTML += "</ul>";
+}
+
 
 ingresoForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -65,13 +77,8 @@ ingresoForm.addEventListener("submit", (event) => {
     ingresoInput.value = "";
     descripcionIngresoInput.value = "";
 
-    const ingresosRegistrados = ingresos.obtenerIngresos();
-    ingresosDiv.innerHTML = "<ul>";
-    ingresosRegistrados.forEach((ingreso) => {
-        ingresosDiv.innerHTML += `<li>+ Bs: ${ingreso.valor} (${ingreso.descripcion})</li>`;
-    });
-    ingresosDiv.innerHTML += "</ul>";
+    mostrarIngresos();
 
-    saldo.actualizarSaldo(ingresoValue)
-    saldoDiv.innerText = saldo.obtenerSaldo()
+    saldo.actualizarSaldo(ingresoValue);
+    saldoDiv.innerText = saldo.obtenerSaldo();
 });
