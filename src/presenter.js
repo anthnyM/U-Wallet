@@ -66,6 +66,7 @@ function mostrarIngresos(){
             <li>
                 - Bs: ${ingreso.valor} (${ingreso.descripcion})
                 <button class="editar-btn" data-index="${index}">Editar</button>
+                <button class="eliminar-btn" data-index="${index}">Eliminar</button>
             </li>
         `;
     });
@@ -76,6 +77,17 @@ function mostrarIngresos(){
         button.addEventListener("click", (event) => {
             const index = event.target.getAttribute("data-index");
             editarIngreso(index);
+        });
+    });
+
+    const eliminarButtons = document.querySelectorAll(".eliminar-btn");
+    eliminarButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const index = event.target.getAttribute("data-index");
+            saldo.actualizarSaldo(-ingresos.obtenerIngresos()[index].valor);
+            ingresos.eliminarIngreso(index);
+            saldoDiv.innerText = saldo.obtenerSaldo();
+            mostrarIngresos();
         });
     });
 }

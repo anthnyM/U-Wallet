@@ -111,3 +111,17 @@ it("Edita los datos al seleccionar la opcion Editar", () =>{
     cy.get("#ingresos-div").should("contain", "Regalo");
 
 });
+
+it("Elimina un ingreso al seleccionar la opcion Eliminar", () =>{
+    cy.visit("/");
+    cy.get("#username").type("admin");
+    cy.get("#password").type("password");
+    cy.get("#login-form").submit();
+
+    cy.get("#ingreso").type(200);
+    cy.get("#descripcion-ingreso").type("Salario");
+    cy.get("#ingreso-form").submit();
+
+    cy.get(".eliminar-btn").first().click();
+    cy.get("#ingresos-div").should("contain", "");
+});
