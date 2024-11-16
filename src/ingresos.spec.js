@@ -22,3 +22,17 @@ describe("Registrar ingreso", () => {
         expect(ingresosRegistrados).toEqual([ingreso1, ingreso2]);
     });
 });
+
+describe("Eliminar ingreso", () => {
+    const ingresos = new Ingresos();
+    const ingreso1 = { valor: 200, descripcion: "Salario" };
+    const ingreso2 = { valor: 150, descripcion: "Venta" };
+
+    it("Deberia eliminar el ingreso registrado", ()=>{
+        ingresos.registrarIngreso(ingreso1.valor, ingreso1.descripcion);
+        ingresos.registrarIngreso(ingreso2.valor, ingreso2.descripcion);
+        ingresos.eliminarIngreso(0);
+        const ingresosRegistrados = ingresos.obtenerIngresos();
+        expect(ingresosRegistrados).toEqual([ingreso2]);
+    });
+});

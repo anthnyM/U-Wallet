@@ -12,6 +12,12 @@ class Ingresos {
     obtenerIngresos() {
         return this.ingresos; 
     }
+
+    eliminarIngreso(index){
+        if (index >= 0 && index < this.ingresos.length) {
+            this.ingresos.splice(index, 1);
+        }
+    }
 }
 
 export default Ingresos;
