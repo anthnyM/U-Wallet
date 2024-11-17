@@ -92,7 +92,7 @@ it("Permite editar los datos al seleccionar la opcion Editar", () =>{
     cy.get("#descripcion-ingreso").should("have.value", "Salario");
 });
 
-it("Edita los datos al seleccionar la opcion Editar", () =>{
+it("Edita los datos al seleccionar la opcion Editar en ingresos", () =>{
     cy.visit("/");
     cy.get("#username").type("admin");
     cy.get("#password").type("password");
@@ -107,12 +107,15 @@ it("Edita los datos al seleccionar la opcion Editar", () =>{
     cy.get("#ingreso").type(400);
     cy.get("#descripcion-ingreso").clear();
     cy.get("#descripcion-ingreso").type("Regalo");
+    cy.get("#fecha-ingreso").type("2023-03-09");
     cy.get("#ingreso-form").submit();
 
     cy.get("#ingresos-div").should("contain", "400");
     cy.get("#ingresos-div").should("contain", "Regalo");
+    cy.get("#ingresos-div").should("contain", "2023-03-09");
 
 });
+
 
 it("Elimina un ingreso al seleccionar la opcion Eliminar", () =>{
     cy.visit("/");
@@ -150,4 +153,28 @@ it("Muestra el ingreso registrado con fecha", () => {
     cy.get("#ingresos-div").should("contain", "150");
     cy.get("#ingresos-div").should("contain", "Venta");
     cy.get("#ingresos-div").should("contain", "sin fecha");
+});
+
+it("Muestra el gasto registrado con fecha", () => {
+    
+    cy.visit("/");
+    cy.get("#username").type("admin");
+    cy.get("#password").type("password");
+    cy.get("#login-form").submit();
+    
+    cy.get("#gasto").type(30);
+    cy.get("#descripcion-gasto").type("almuerzo");
+    cy.get("#fecha-gasto").type("2014-08-11");
+    cy.get("#gasto-form").submit();
+
+    cy.get("#gasto").type(175);
+    cy.get("#descripcion-gasto").type("Ropa");
+    cy.get("#gasto-form").submit();
+
+    cy.get("#gastos-div").should("contain", "30");
+    cy.get("#gastos-div").should("contain", "almuerzo");
+    cy.get("#gastos-div").should("contain", "2014-08-11");
+    cy.get("#gastos-div").should("contain", "175");
+    cy.get("#gastos-div").should("contain", "Ropa");
+    cy.get("#gastos-div").should("contain", "sin fecha");
 });

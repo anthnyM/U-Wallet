@@ -9,7 +9,7 @@ const saldo = new Saldo();
 
 const gastoInput = document.querySelector("#gasto");
 const descripcionGastoInput = document.querySelector("#descripcion-gasto");
-//const fechaGastoInput = document.querySelector("#fecha-gasto");  
+const fechaGastoInput = document.querySelector("#fecha-gasto");  
 const gastoForm = document.querySelector("#gasto-form");
 const gastosDiv = document.querySelector("#gastos-div");
 const ingresoInput = document.querySelector("#ingreso");
@@ -41,7 +41,7 @@ function mostrarGastos(){
     gastosRegistrados.forEach((gasto) => {
         gastosDiv.innerHTML += `
             <li>
-                - Bs: ${gasto.valor} (${gasto.descripcion}) (${gasto.fecha === "nulo" ? "sin fecha" : ingreso.fecha})
+                - Bs: ${gasto.valor} (${gasto.descripcion}) (${gasto.fecha === "nulo" ? "sin fecha" : gasto.fecha})
             </li>`;
     });
     gastosDiv.innerHTML += "</ul>";
@@ -54,14 +54,19 @@ gastoForm.addEventListener("submit", (event) => {
 
     const gastoValue = Number.parseInt(gastoInput.value);
     const descripcionGastoValue = descripcionGastoInput.value;
-    gastos.registrarGasto(gastoValue, descripcionGastoValue);
+    const fechaGastoValue = fechaGastoInput.value || "sin fecha"; 
+
+    gastos.registrarGasto(gastoValue, descripcionGastoValue, fechaGastoValue);
 
     gastoInput.value = "";
     descripcionGastoInput.value = "";
+    fechaGastoInput.value = "";
+
 
     mostrarGastos();
     saldo.actualizarSaldo(-gastoValue);
     saldoDiv.innerText = saldo.obtenerSaldo();
+
 });
 
 

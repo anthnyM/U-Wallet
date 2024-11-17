@@ -4,8 +4,8 @@ class Gastos {
         this.gastos = []; 
     }
 
-    registrarGasto(valor, descripcion) {
-        const gasto = { valor, descripcion};
+    registrarGasto(valor, descripcion, fecha= null) {
+        const gasto = { valor, descripcion, fecha};
         this.gastos.push(gasto); 
     }
 

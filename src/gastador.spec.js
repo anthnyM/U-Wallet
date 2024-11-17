@@ -3,8 +3,8 @@ import Gastos from "./Gastos";
 
 describe("Registrar gasto", () => {
     const gastos = new Gastos();
-    const gasto1 = { valor: 50, descripcion: "Comida"};
-    const gasto2 = { valor: 100, descripcion: "Transporte"};
+    const gasto1 = { valor: 50, descripcion: "Comida", fecha:null };
+    const gasto2 = { valor: 100, descripcion: "Transporte", fecha:null };
 
     beforeEach(() => {
         gastos.gastos = [];
@@ -23,24 +23,24 @@ describe("Registrar gasto", () => {
         expect(gastosRegistrados).toEqual([gasto1, gasto2]);
     });
 });
-// describe("Registrar gasto con fecha", () => {
-//     const gastos = new Gastos();
-//     const gastoConFecha = { valor: 200, descripcion: "Salario", fecha: "2024-11-16" };
-//     const gastoSinFecha = { valor: 100, descripcion: "Venta", fecha: null };
+describe("Registrar gasto con fecha", () => {
+    const gastos = new Gastos();
+    const gastoConFecha = { valor: 200, descripcion: "Salario", fecha: "2024-11-16" };
+    const gastoSinFecha = { valor: 100, descripcion: "Venta", fecha: null };
 
-//     beforeEach(() => {
-//         gastos.gastos = [];
-//     });
+    beforeEach(() => {
+        gastos.gastos = [];
+    });
 
-//     it("Debería registrar un ingreso con una fecha específica", () => {
-//         gastos.registrarGasto(gastoConFecha.valor, gastoConFecha.descripcion, gastoConFecha.fecha);
-//         const gastoRegistrado1 = gastos.obtenerGastos()[0];
-//         expect(gastoRegistrado1).toEqual(gastoConFecha);
-//     });
+    it("Debería registrar un ingreso con una fecha específica", () => {
+        gastos.registrarGasto(gastoConFecha.valor, gastoConFecha.descripcion, gastoConFecha.fecha);
+        const gastoRegistrado1 = gastos.obtenerGastos()[0];
+        expect(gastoRegistrado1).toEqual(gastoConFecha);
+    });
 
-//     it("Debería registrar un gasto sin fecha ya que no se especifico", () => {
-//         gastos.registrarGasto(gastoSinFecha.valor, gastoSinFecha.descripcion);
-//         const gastoRegistrado2 = gastos.obtenerGastos()[0];
-//         expect(gastoRegistrado2).toEqual(gastoSinFecha);
-//     });
-// });
+    it("Debería registrar un gasto sin fecha ya que no se especifico", () => {
+        gastos.registrarGasto(gastoSinFecha.valor, gastoSinFecha.descripcion);
+        const gastoRegistrado2 = gastos.obtenerGastos()[0];
+        expect(gastoRegistrado2).toEqual(gastoSinFecha);
+    });
+});
