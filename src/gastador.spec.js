@@ -23,6 +23,22 @@ describe("Registrar gasto", () => {
         expect(gastosRegistrados).toEqual([gasto1, gasto2]);
     });
 });
+
+describe("Eliminar gasto", () => {
+    const gastos = new Gastos();
+    const gasto1 = { valor: 50, descripcion: "Comida", fecha:null };
+    const gasto2 = { valor: 100, descripcion: "Transporte", fecha:null };
+
+    it("Deberia eliminar el gasto registrado", ()=>{
+        gastos.registrarGasto( gasto1.valor, gasto1.descripcion);
+        gastos.registrarGasto( gasto2.valor, gasto2.descripcion);
+        gastos.eliminarGasto(0);
+        const gastosRegistrados = gastos.obtenerGastos();
+        expect(gastosRegistrados).toEqual([gasto2]);
+    });
+
+
+});
 describe("Registrar gasto con fecha", () => {
     const gastos = new Gastos();
     const gastoConFecha = { valor: 200, descripcion: "Salario", fecha: "2024-11-16" };

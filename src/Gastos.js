@@ -12,6 +12,12 @@ class Gastos {
     obtenerGastos() {
         return this.gastos; 
     }
+    eliminarGasto(index){
+        if (index >= 0 && index < this.gastos.length) {
+            this.gastos.splice(index, 1);
+        }
+    }
+
 }
 
 export default Gastos;

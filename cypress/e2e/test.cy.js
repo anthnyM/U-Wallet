@@ -87,7 +87,7 @@ it("Permite editar los datos al seleccionar la opcion Editar", () =>{
     cy.get("#descripcion-ingreso").type("Salario");
     cy.get("#ingreso-form").submit();
 
-    cy.get(".editar-btn").first().click();
+    cy.get(".editar-ingreso-btn").first().click();
     cy.get("#ingreso").should("have.value", "200");
     cy.get("#descripcion-ingreso").should("have.value", "Salario");
 });
@@ -102,7 +102,7 @@ it("Edita los datos al seleccionar la opcion Editar en ingresos", () =>{
     cy.get("#descripcion-ingreso").type("Salario");
     cy.get("#ingreso-form").submit();
 
-    cy.get(".editar-btn").first().click();
+    cy.get(".editar-ingreso-btn").first().click();
     cy.get("#ingreso").clear();
     cy.get("#ingreso").type(400);
     cy.get("#descripcion-ingreso").clear();
@@ -113,6 +113,30 @@ it("Edita los datos al seleccionar la opcion Editar en ingresos", () =>{
     cy.get("#ingresos-div").should("contain", "400");
     cy.get("#ingresos-div").should("contain", "Regalo");
     cy.get("#ingresos-div").should("contain", "2023-03-09");
+
+});
+
+it("Edita los datos al seleccionar la opcion Editar en gastos", () =>{
+    cy.visit("/");
+    cy.get("#username").type("admin");
+    cy.get("#password").type("password");
+    cy.get("#login-form").submit();
+
+    cy.get("#gasto").type(100);
+    cy.get("#descripcion-gasto").type("Almuerzo");
+    cy.get("#gasto-form").submit();
+
+    cy.get(".editar-gasto-btn").first().click();
+    cy.get("#gasto").clear();
+    cy.get("#gasto").type(80);
+    cy.get("#descripcion-gasto").clear();
+    cy.get("#descripcion-gasto").type("Comida");
+    cy.get("#fecha-gasto").type("2021-03-09");
+    cy.get("#gasto-form").submit();
+
+    cy.get("#gastos-div").should("contain", "80");
+    cy.get("#gastos-div").should("contain", "Comida");
+    cy.get("#gastos-div").should("contain", "2021-03-09");
 
 });
 
@@ -127,9 +151,11 @@ it("Elimina un ingreso al seleccionar la opcion Eliminar", () =>{
     cy.get("#descripcion-ingreso").type("Salario");
     cy.get("#ingreso-form").submit();
 
-    cy.get(".eliminar-btn").first().click();
+    cy.get(".eliminar-ingreso-btn").first().click();
     cy.get("#ingresos-div").should("contain", "");
 });
+
+
 
 it("Muestra el ingreso registrado con fecha", () => {
     

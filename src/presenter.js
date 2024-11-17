@@ -38,13 +38,37 @@ document.getElementById('login-form').addEventListener('submit', function(event)
 function mostrarGastos(){
     const gastosRegistrados = gastos.obtenerGastos();
     gastosDiv.innerHTML = "<ul>";
-    gastosRegistrados.forEach((gasto) => {
+    gastosRegistrados.forEach((gasto, indexGasto) => {
         gastosDiv.innerHTML += `
             <li>
                 - Bs: ${gasto.valor} (${gasto.descripcion}) (${gasto.fecha === "nulo" ? "sin fecha" : gasto.fecha})
+                <button class="editar-gasto-btn" data-index="${indexGasto}">Editar</button>
+                <button class="eliminar-gasto-btn" data-index="${indexGasto}">Eliminar</button>
+          
             </li>`;
     });
     gastosDiv.innerHTML += "</ul>";
+
+    // Agregar eventos a los botones de "Editar"
+    const editarButtons = document.querySelectorAll(".editar-gasto-btn");
+    editarButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const index = event.target.getAttribute("data-index");
+            editarGasto(index);
+        });
+    });
+
+    // Agregar eventos a los botones de "Eliminar"
+    const eliminarButtons = document.querySelectorAll(".eliminar-gasto-btn");
+    eliminarButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const index = event.target.getAttribute("data-index");
+            saldo.actualizarSaldo(gastos.obtenerGastos()[index].valor);  // Decrementar saldo al eliminar
+            gastos.eliminarGasto(index);
+            saldoDiv.innerText = saldo.obtenerSaldo();
+            mostrarGastos();
+        });
+    });
     
 }
 
@@ -69,22 +93,35 @@ gastoForm.addEventListener("submit", (event) => {
 
 });
 
+function editarGasto(index) {
+    const gasto = gastos.obtenerGastos()[index];
+
+    gastoInput.value = gasto.valor;
+    descripcionGastoInput.value = gasto.descripcion;
+    fechaGastoInput.value = gasto.fecha === "sin fecha" ? "" : gasto.fecha;  // Si es "sin fecha", dejamos el campo vacío.
+
+    // Eliminar el gasto de la lista antes de editarlo
+    gastos.eliminarGasto(index);
+    saldo.actualizarSaldo(gasto.valor);  // Revertir el saldo por el valor anterior
+}
+
+//------------------------------------- INGRESOS ---------------------------------------------------------
 
 function mostrarIngresos(){
     const ingresosRegistrados = ingresos.obtenerIngresos();
     ingresosDiv.innerHTML = "<ul>";
-    ingresosRegistrados.forEach((ingreso, index) => {
+    ingresosRegistrados.forEach((ingreso, indexIngreso) => {
         ingresosDiv.innerHTML += `
             <li>
                 - Bs: ${ingreso.valor} (${ingreso.descripcion}) (${ingreso.fecha === "nulo" ? "sin fecha" : ingreso.fecha})
-                <button class="editar-btn" data-index="${index}">Editar</button>
-                <button class="eliminar-btn" data-index="${index}">Eliminar</button>
+                <button class="editar-ingreso-btn" data-index="${indexIngreso}">Editar</button>
+                <button class="eliminar-ingreso-btn" data-index="${indexIngreso}">Eliminar</button>
             </li>
         `;
     });
     ingresosDiv.innerHTML += "</ul>";
 
-    const editarButtons = document.querySelectorAll(".editar-btn");
+    const editarButtons = document.querySelectorAll(".editar-ingreso-btn");
     editarButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
             const index = event.target.getAttribute("data-index");
@@ -92,7 +129,7 @@ function mostrarIngresos(){
         });
     });
 
-    const eliminarButtons = document.querySelectorAll(".eliminar-btn");
+    const eliminarButtons = document.querySelectorAll(".eliminar-ingreso-btn");
     eliminarButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
             const index = event.target.getAttribute("data-index");
