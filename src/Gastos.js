@@ -5,7 +5,7 @@ class Gastos {
     }
 
     registrarGasto(valor, descripcion) {
-        const gasto = { valor, descripcion };
+        const gasto = { valor, descripcion};
         this.gastos.push(gasto); 
     }
 

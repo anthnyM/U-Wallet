@@ -4,8 +4,8 @@ class Ingresos {
         this.ingresos = [];
     }
 
-    registrarIngreso(valor, descripcion) {
-        const ingreso = { valor, descripcion }; 
+    registrarIngreso(valor, descripcion, fecha = null) {
+        const ingreso = { valor, descripcion, fecha };
         this.ingresos.push(ingreso);
     }
 

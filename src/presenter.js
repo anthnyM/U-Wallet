@@ -9,12 +9,15 @@ const saldo = new Saldo();
 
 const gastoInput = document.querySelector("#gasto");
 const descripcionGastoInput = document.querySelector("#descripcion-gasto");
+//const fechaGastoInput = document.querySelector("#fecha-gasto");  
 const gastoForm = document.querySelector("#gasto-form");
 const gastosDiv = document.querySelector("#gastos-div");
 const ingresoInput = document.querySelector("#ingreso");
 const descripcionIngresoInput = document.querySelector("#descripcion-ingreso");
+const fechaIngresoInput = document.querySelector("#fecha-ingreso"); 
 const ingresoForm = document.querySelector("#ingreso-form");
 const ingresosDiv = document.querySelector("#ingresos-div");
+
 
 const saldoDiv = document.querySelector("#saldo-actual");
 
@@ -36,9 +39,13 @@ function mostrarGastos(){
     const gastosRegistrados = gastos.obtenerGastos();
     gastosDiv.innerHTML = "<ul>";
     gastosRegistrados.forEach((gasto) => {
-        gastosDiv.innerHTML += `<li>- Bs: ${gasto.valor} (${gasto.descripcion})</li>`;
+        gastosDiv.innerHTML += `
+            <li>
+                - Bs: ${gasto.valor} (${gasto.descripcion}) (${gasto.fecha === "nulo" ? "sin fecha" : ingreso.fecha})
+            </li>`;
     });
     gastosDiv.innerHTML += "</ul>";
+    
 }
 
 
@@ -64,7 +71,7 @@ function mostrarIngresos(){
     ingresosRegistrados.forEach((ingreso, index) => {
         ingresosDiv.innerHTML += `
             <li>
-                - Bs: ${ingreso.valor} (${ingreso.descripcion})
+                - Bs: ${ingreso.valor} (${ingreso.descripcion}) (${ingreso.fecha === "nulo" ? "sin fecha" : ingreso.fecha})
                 <button class="editar-btn" data-index="${index}">Editar</button>
                 <button class="eliminar-btn" data-index="${index}">Eliminar</button>
             </li>
@@ -92,6 +99,7 @@ function mostrarIngresos(){
     });
 }
 
+
 function editarIngreso(index) {
     const ingreso = ingresos.obtenerIngresos()[index];
 
@@ -103,16 +111,18 @@ function editarIngreso(index) {
 }
 
 
-
 ingresoForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const ingresoValue = Number.parseInt(ingresoInput.value);
     const descripcionIngresoValue = descripcionIngresoInput.value;
-    ingresos.registrarIngreso(ingresoValue, descripcionIngresoValue);
+    const fechaIngresoValue = fechaIngresoInput.value || "sin fecha";  // Si no se ingresa fecha, asignar "nulo".
+
+    ingresos.registrarIngreso(ingresoValue, descripcionIngresoValue, fechaIngresoValue);
 
     ingresoInput.value = "";
     descripcionIngresoInput.value = "";
+    fechaIngresoInput.value = ""; // Limpiar el campo de fecha.
 
     mostrarIngresos();
     saldo.actualizarSaldo(ingresoValue);

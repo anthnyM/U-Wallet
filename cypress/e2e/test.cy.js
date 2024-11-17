@@ -33,7 +33,9 @@ it.skip("Muestra el ingreso registrado", () => {
     cy.get("#ingresos-div").should("contain", "Venta");
 });
 
+
 });
+
 
 it("Verificar visibilidad de login", ()=> {
     cy.visit("/");
@@ -124,4 +126,28 @@ it("Elimina un ingreso al seleccionar la opcion Eliminar", () =>{
 
     cy.get(".eliminar-btn").first().click();
     cy.get("#ingresos-div").should("contain", "");
+});
+
+it("Muestra el ingreso registrado con fecha", () => {
+    
+    cy.visit("/");
+    cy.get("#username").type("admin");
+    cy.get("#password").type("password");
+    cy.get("#login-form").submit();
+    
+    cy.get("#ingreso").type(200);
+    cy.get("#descripcion-ingreso").type("Salario");
+    cy.get("#fecha-ingreso").type("2024-11-11");
+    cy.get("#ingreso-form").submit();
+
+    cy.get("#ingreso").type(150);
+    cy.get("#descripcion-ingreso").type("Venta");
+    cy.get("#ingreso-form").submit();
+
+    cy.get("#ingresos-div").should("contain", "200");
+    cy.get("#ingresos-div").should("contain", "Salario");
+    cy.get("#ingresos-div").should("contain", "2024-11-11");
+    cy.get("#ingresos-div").should("contain", "150");
+    cy.get("#ingresos-div").should("contain", "Venta");
+    cy.get("#ingresos-div").should("contain", "sin fecha");
 });
