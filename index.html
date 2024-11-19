@@ -44,6 +44,15 @@
             <input type="number" id="ingreso" min="0" required />
             <label for="descripcion-ingreso">Descripción: </label>
             <input type="text" id="descripcion-ingreso" required />
+            <label for="categoria-ingresos">Categoría: </label>
+            <select name="categoria" id="categoria-ingresos">
+                <option value="Salario">Salario</option>
+                <option value="Ventas">Ventas</option>
+                <option value="Apuestas">Apuestas</option>
+                <option value="Reembolsos">Reembolsos</option>
+                <option value="Regalos">Regalos</option>
+                <option value="Varios">Varios</option>
+            </select>
             <input type="date" id="fecha-ingreso" placeholder="Fecha (opcional)" />
             <input type="submit" value="Registrar ingreso" />
         </form>
