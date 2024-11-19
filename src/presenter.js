@@ -115,7 +115,7 @@ function mostrarIngresos(){
     ingresosRegistrados.forEach((ingreso, indexIngreso) => {
         ingresosDiv.innerHTML += `
             <li>
-                - Bs: ${ingreso.valor} (${ingreso.descripcion}) (${ingreso.fecha === "nulo" ? "sin fecha" : ingreso.fecha})
+                - Bs: ${ingreso.valor} (${ingreso.descripcion}) (${ingreso.categoria === "nulo" ? "--" : ingreso.categoria}) (${ingreso.fecha === "nulo" ? "sin fecha" : ingreso.fecha})
                 <button class="editar-ingreso-btn" data-index="${indexIngreso}">Editar</button>
                 <button class="eliminar-ingreso-btn" data-index="${indexIngreso}">Eliminar</button>
             </li>
@@ -160,13 +160,15 @@ ingresoForm.addEventListener("submit", (event) => {
 
     const ingresoValue = Number.parseInt(ingresoInput.value);
     const descripcionIngresoValue = descripcionIngresoInput.value;
+    const categoriaIngresoValue = categoriaIngresoInput.value || "--";
     const fechaIngresoValue = fechaIngresoInput.value || "sin fecha";  // Si no se ingresa fecha, asignar "nulo".
 
-    ingresos.registrarIngreso(ingresoValue, descripcionIngresoValue, fechaIngresoValue);
+    ingresos.registrarIngreso(ingresoValue, descripcionIngresoValue, fechaIngresoValue, categoriaIngresoValue);
 
     ingresoInput.value = "";
     descripcionIngresoInput.value = "";
     fechaIngresoInput.value = ""; // Limpiar el campo de fecha.
+    categoriaIngresoInput.value = "";
 
     mostrarIngresos();
     saldo.actualizarSaldo(ingresoValue);
