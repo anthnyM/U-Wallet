@@ -4,8 +4,8 @@ class Ingresos {
         this.ingresos = [];
     }
 
-    registrarIngreso(valor, descripcion, fecha = null) {
-        const ingreso = { valor, descripcion, fecha };
+    registrarIngreso(valor, descripcion, fecha = null, categoria = null) {
+        const ingreso = { valor, descripcion, fecha, categoria };
         this.ingresos.push(ingreso);
     }
 
@@ -16,7 +16,9 @@ class Ingresos {
     eliminarIngreso(index){
         if (index >= 0 && index < this.ingresos.length) {
             this.ingresos.splice(index, 1);
+            return 1
         }
+        return 0
     }
 }
 

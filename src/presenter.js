@@ -7,15 +7,17 @@ const gastos = new Gastos();
 const ingresos = new Ingresos();
 const saldo = new Saldo();
 
+const gastoForm = document.querySelector("#gasto-form");
 const gastoInput = document.querySelector("#gasto");
 const descripcionGastoInput = document.querySelector("#descripcion-gasto");
 const fechaGastoInput = document.querySelector("#fecha-gasto");  
-const gastoForm = document.querySelector("#gasto-form");
 const gastosDiv = document.querySelector("#gastos-div");
+
+const ingresoForm = document.querySelector("#ingreso-form");
 const ingresoInput = document.querySelector("#ingreso");
 const descripcionIngresoInput = document.querySelector("#descripcion-ingreso");
+const categoriaIngresoInput = document.querySelector("#categoria-ingresos")
 const fechaIngresoInput = document.querySelector("#fecha-ingreso"); 
-const ingresoForm = document.querySelector("#ingreso-form");
 const ingresosDiv = document.querySelector("#ingresos-div");
 
 
