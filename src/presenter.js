@@ -19,6 +19,7 @@ const descripcionIngresoInput = document.querySelector("#descripcion-ingreso");
 const categoriaIngresoInput = document.querySelector("#categoria-ingresos")
 const fechaIngresoInput = document.querySelector("#fecha-ingreso"); 
 const ingresosDiv = document.querySelector("#ingresos-div");
+const verCategoriaInput = document.querySelector("#ver-categoria-ingresos")
 
 
 const saldoDiv = document.querySelector("#saldo-actual");
@@ -35,6 +36,8 @@ document.getElementById('login-form').addEventListener('submit', function(event)
         document.getElementById('login-error').style.display = 'block'; 
     }
   });
+
+
 
 
 function mostrarGastos(){
@@ -109,20 +112,38 @@ function editarGasto(index) {
 
 //------------------------------------- INGRESOS ---------------------------------------------------------
 
-function mostrarIngresos(){
+verCategoriaInput.addEventListener('change', function() {
+    mostrarIngresos()
+})
+
+function mostrarIngresos() {
+    const categoriaSeleccionada = verCategoriaInput.value;
+
     const ingresosRegistrados = ingresos.obtenerIngresos();
+
+    // Filtrar ingresos según la categoría seleccionada y conservar el índice original
+    const ingresosFiltrados = ingresosRegistrados
+        .map((ingreso, indexOriginal) => ({ ...ingreso, indexOriginal }))
+        .filter((ingreso) => {
+            return categoriaSeleccionada === "Todos" || ingreso.categoria === categoriaSeleccionada;
+        });
+
+    // Reiniciar la lista
     ingresosDiv.innerHTML = "<ul>";
-    ingresosRegistrados.forEach((ingreso, indexIngreso) => {
+
+    // Mostrar los ingresos filtrados
+    ingresosFiltrados.forEach((ingreso) => {
         ingresosDiv.innerHTML += `
             <li>
                 - Bs: ${ingreso.valor} (${ingreso.descripcion}) (${ingreso.categoria === "nulo" ? "--" : ingreso.categoria}) (${ingreso.fecha === "nulo" ? "sin fecha" : ingreso.fecha})
-                <button class="editar-ingreso-btn" data-index="${indexIngreso}">Editar</button>
-                <button class="eliminar-ingreso-btn" data-index="${indexIngreso}">Eliminar</button>
-            </li>
-        `;
+                <button class="editar-ingreso-btn" data-index="${ingreso.indexOriginal}">Editar</button>
+                <button class="eliminar-ingreso-btn" data-index="${ingreso.indexOriginal}">Eliminar</button>
+            </li>`;
     });
+
     ingresosDiv.innerHTML += "</ul>";
 
+    // Configurar eventos para los botones de editar
     const editarButtons = document.querySelectorAll(".editar-ingreso-btn");
     editarButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
@@ -131,28 +152,20 @@ function mostrarIngresos(){
         });
     });
 
+    // Configurar eventos para los botones de eliminar
     const eliminarButtons = document.querySelectorAll(".eliminar-ingreso-btn");
     eliminarButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
             const index = event.target.getAttribute("data-index");
-            saldo.actualizarSaldo(-ingresos.obtenerIngresos()[index].valor);
+            const ingresoEliminado = ingresos.obtenerIngresos()[index];
+            saldo.actualizarSaldo(-ingresoEliminado.valor);
             ingresos.eliminarIngreso(index);
             saldoDiv.innerText = saldo.obtenerSaldo();
-            mostrarIngresos();
+            mostrarIngresos(); // Refrescar la lista
         });
     });
 }
 
-
-function editarIngreso(index) {
-    const ingreso = ingresos.obtenerIngresos()[index];
-
-    ingresoInput.value = ingreso.valor;
-    descripcionIngresoInput.value = ingreso.descripcion;
-
-    ingresos.eliminarIngreso(index);
-    saldo.actualizarSaldo(-ingreso.valor);
-}
 
 
 ingresoForm.addEventListener("submit", (event) => {

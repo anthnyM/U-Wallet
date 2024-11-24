@@ -214,12 +214,23 @@ it("Permite registrar una categoría al registro de un ingreso", () => {
     
     cy.get("#ingreso").type(2000);
     cy.get("#descripcion-ingreso").type("PachaSoft");
-    cy.get("#categoria-ingresos").select("Regalos")
+    cy.get("#categoria-ingresos").select("Salario")
     cy.get("#fecha-ingreso").type("2014-08-11");
+    cy.get("#ingreso-form").submit();
+
+    cy.get("#ingreso").type(1500);
+    cy.get("#descripcion-ingreso").type("Monkey Business");
+    cy.get("#categoria-ingresos").select("Apuestas")
+    cy.get("#fecha-ingreso").type("2014-08-12");
     cy.get("#ingreso-form").submit();
 
     cy.get('#ingresos-div').should('contain', '2000')
     cy.get('#ingresos-div').should('contain', 'PachaSoft')
-    cy.get('#ingresos-div').should('contain', 'Regalos')
+    cy.get('#ingresos-div').should('contain', 'Salario')
     cy.get('#ingresos-div').should('contain', '2014-08-11')
+
+    cy.get('#ingresos-div').should('contain', '1500')
+    cy.get('#ingresos-div').should('contain', 'Monkey Business')
+    cy.get('#ingresos-div').should('contain', 'Apuestas')
+    cy.get('#ingresos-div').should('contain', '2014-08-12')
 });
