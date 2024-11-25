@@ -13,7 +13,7 @@ const descripcionGastoInput = document.querySelector("#descripcion-gasto");
 const categoriaGastoInput = document.querySelector("#categoria-gastos")
 const fechaGastoInput = document.querySelector("#fecha-gasto");  
 const gastosDiv = document.querySelector("#gastos-div");
-const verCategoriaInput1 = document.querySelector("#ver-categoria-gastos")
+const verCategoriaGastoInput = document.querySelector("#ver-categoria-gastos")
 
 const ingresoForm = document.querySelector("#ingreso-form");
 const ingresoInput = document.querySelector("#ingreso");
@@ -21,7 +21,7 @@ const descripcionIngresoInput = document.querySelector("#descripcion-ingreso");
 const categoriaIngresoInput = document.querySelector("#categoria-ingresos")
 const fechaIngresoInput = document.querySelector("#fecha-ingreso"); 
 const ingresosDiv = document.querySelector("#ingresos-div");
-const verCategoriaInput = document.querySelector("#ver-categoria-ingresos")
+const verCategoriaIngresoInput = document.querySelector("#ver-categoria-ingresos")
 
 
 const saldoDiv = document.querySelector("#saldo-actual");
@@ -39,12 +39,12 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     }
 });
 
-verCategoriaInput1.addEventListener('change', function() {
+verCategoriaGastoInput.addEventListener('change', function() {
     mostrarGastos()
 })
 
 function mostrarGastos() {
-    const categoriaSeleccionada = verCategoriaInput1.value;
+    const categoriaSeleccionada = verCategoriaGastoInput.value;
 
     const gastosRegistrados = gastos.obtenerGastos();
 
@@ -125,12 +125,12 @@ function editarGasto(index) {
 
 //------------------------------------- INGRESOS ---------------------------------------------------------
 
-verCategoriaInput.addEventListener('change', function() {
+verCategoriaIngresoInput.addEventListener('change', function() {
     mostrarIngresos()
 })
 
 function mostrarIngresos() {
-    const categoriaSeleccionada = verCategoriaInput.value;
+    const categoriaSeleccionada = verCategoriaIngresoInput.value;
 
     const ingresosRegistrados = ingresos.obtenerIngresos();
 
