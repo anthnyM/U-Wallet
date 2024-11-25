@@ -39,21 +39,35 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     }
 });
 
+verCategoriaInput1.addEventListener('change', function() {
+    mostrarGastos()
+})
+
 function mostrarGastos() {
+    const categoriaSeleccionada = verCategoriaInput1.value;
+
     const gastosRegistrados = gastos.obtenerGastos();
+
+    const gastosFiltrados = gastosRegistrados
+        .map((gasto, indexOriginal) => ({ ...gasto, indexOriginal }))
+        .filter((gasto) => {
+            return categoriaSeleccionada === "Todos" || gasto.categoria === categoriaSeleccionada;
+        });
+
     gastosDiv.innerHTML = "<ul>";
 
-    gastosRegistrados.forEach((gasto, indexGasto) => {
+    gastosFiltrados.forEach((gasto) => {
         gastosDiv.innerHTML += `
             <li>
                 - Bs: ${gasto.valor} (${gasto.descripcion}) (${gasto.categoria === "nulo" ? "--" : gasto.categoria}) (${gasto.fecha === "nulo" ? "sin fecha" : gasto.fecha})
-                <button class="editar-gasto-btn" data-index="${indexGasto}">Editar</button>
-                <button class="eliminar-gasto-btn" data-index="${indexGasto}">Eliminar</button>
+                <button class="editar-gasto-btn" data-index="${gasto.indexOriginal}">Editar</button>
+                <button class="eliminar-gasto-btn" data-index="${gasto.indexOriginal}">Eliminar</button>
             </li>`;
     });
+
     gastosDiv.innerHTML += "</ul>";
 
-    // Agregar eventos a los botones de "Editar"
+    // Configurar eventos para los botones de editar
     const editarButtons = document.querySelectorAll(".editar-gasto-btn");
     editarButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
@@ -62,15 +76,16 @@ function mostrarGastos() {
         });
     });
 
-    // Agregar eventos a los botones de "Eliminar"
+    // Configurar eventos para los botones de eliminar
     const eliminarButtons = document.querySelectorAll(".eliminar-gasto-btn");
     eliminarButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
             const index = event.target.getAttribute("data-index");
-            saldo.actualizarSaldo(gastos.obtenerGastos()[index].valor); // Revertir saldo
+            const gastoEliminado = gastos.obtenerGastos()[index];
+            saldo.actualizarSaldo(gastoEliminado.valor); // Revertir saldo por el gasto eliminado
             gastos.eliminarGasto(index);
             saldoDiv.innerText = saldo.obtenerSaldo();
-            mostrarGastos(); // Refrescar lista
+            mostrarGastos(); // Refrescar la lista
         });
     });
 }
