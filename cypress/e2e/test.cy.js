@@ -234,3 +234,33 @@ it("Permite registrar una categoría al registro de un ingreso", () => {
     cy.get('#ingresos-div').should('contain', 'Apuestas')
     cy.get('#ingresos-div').should('contain', '2014-08-12')
 });
+
+it("Permite registrar una categoría al registro de un gasto", () => {
+    
+    cy.visit("/");
+    cy.get("#username").type("admin");
+    cy.get("#password").type("password");
+    cy.get("#login-form").submit();
+    
+    cy.get("#gasto").type(1000);
+    cy.get("#descripcion-gasto").type("Almuerzo");
+    cy.get("#categoria-gastos").select("Comida")
+    cy.get("#fecha-gasto").type("2022-08-11");
+    cy.get("#gasto-form").submit();
+
+    cy.get("#gasto").type(1500);
+    cy.get("#descripcion-gasto").type("Monkey Business");
+    cy.get("#categoria-gastos").select("Apuestas")
+    cy.get("#fecha-gasto").type("2024-08-12");
+    cy.get("#gasto-form").submit();
+
+    cy.get('#gastos-div').should('contain', '1000')
+    cy.get('#gastos-div').should('contain', 'Almuerzo')
+    cy.get('#gastos-div').should('contain', 'Comida')
+    cy.get('#gastos-div').should('contain', '2022-08-11')
+
+    cy.get('#gastos-div').should('contain', '1500')
+    cy.get('#gastos-div').should('contain', 'Monkey Business')
+    cy.get('#gastos-div').should('contain', 'Apuestas')
+    cy.get('#gastos-div').should('contain', '2024-08-12')
+});

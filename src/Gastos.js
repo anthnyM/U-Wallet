@@ -4,8 +4,8 @@ class Gastos {
         this.gastos = []; 
     }
 
-    registrarGasto(valor, descripcion, fecha= null) {
-        const gasto = { valor, descripcion, fecha};
+    registrarGasto(valor, descripcion, fecha= null, categoria = null) {
+        const gasto = { valor, descripcion, fecha, categoria};
         this.gastos.push(gasto); 
     }
 
@@ -15,8 +15,8 @@ class Gastos {
     eliminarGasto(index){
         if (index >= 0 && index < this.gastos.length) {
             this.gastos.splice(index, 1);
-        }
-    }
+        }
+    }
 
 }
 

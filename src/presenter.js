@@ -10,8 +10,10 @@ const saldo = new Saldo();
 const gastoForm = document.querySelector("#gasto-form");
 const gastoInput = document.querySelector("#gasto");
 const descripcionGastoInput = document.querySelector("#descripcion-gasto");
+const categoriaGastoInput = document.querySelector("#categoria-gastos")
 const fechaGastoInput = document.querySelector("#fecha-gasto");  
 const gastosDiv = document.querySelector("#gastos-div");
+const verCategoriaInput1 = document.querySelector("#ver-categoria-gastos")
 
 const ingresoForm = document.querySelector("#ingreso-form");
 const ingresoInput = document.querySelector("#ingreso");
@@ -35,21 +37,18 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     } else {
         document.getElementById('login-error').style.display = 'block'; 
     }
-  });
+});
 
-
-
-
-function mostrarGastos(){
+function mostrarGastos() {
     const gastosRegistrados = gastos.obtenerGastos();
     gastosDiv.innerHTML = "<ul>";
+
     gastosRegistrados.forEach((gasto, indexGasto) => {
         gastosDiv.innerHTML += `
             <li>
-                - Bs: ${gasto.valor} (${gasto.descripcion}) (${gasto.fecha === "nulo" ? "sin fecha" : gasto.fecha})
+                - Bs: ${gasto.valor} (${gasto.descripcion}) (${gasto.categoria === "nulo" ? "--" : gasto.categoria}) (${gasto.fecha === "nulo" ? "sin fecha" : gasto.fecha})
                 <button class="editar-gasto-btn" data-index="${indexGasto}">Editar</button>
                 <button class="eliminar-gasto-btn" data-index="${indexGasto}">Eliminar</button>
-          
             </li>`;
     });
     gastosDiv.innerHTML += "</ul>";
@@ -68,13 +67,12 @@ function mostrarGastos(){
     eliminarButtons.forEach((button) => {
         button.addEventListener("click", (event) => {
             const index = event.target.getAttribute("data-index");
-            saldo.actualizarSaldo(gastos.obtenerGastos()[index].valor);  // Decrementar saldo al eliminar
+            saldo.actualizarSaldo(gastos.obtenerGastos()[index].valor); // Revertir saldo
             gastos.eliminarGasto(index);
             saldoDiv.innerText = saldo.obtenerSaldo();
-            mostrarGastos();
+            mostrarGastos(); // Refrescar lista
         });
     });
-    
 }
 
 
@@ -83,19 +81,19 @@ gastoForm.addEventListener("submit", (event) => {
 
     const gastoValue = Number.parseInt(gastoInput.value);
     const descripcionGastoValue = descripcionGastoInput.value;
-    const fechaGastoValue = fechaGastoInput.value || "sin fecha"; 
+    const categoriaGastoValue = categoriaGastoInput.value || "--";
+    const fechaGastoValue = fechaGastoInput.value || "sin fecha";
 
-    gastos.registrarGasto(gastoValue, descripcionGastoValue, fechaGastoValue);
+    gastos.registrarGasto(gastoValue, descripcionGastoValue, fechaGastoValue, categoriaGastoValue);
 
     gastoInput.value = "";
     descripcionGastoInput.value = "";
     fechaGastoInput.value = "";
-
+    categoriaGastoInput.value = "";
 
     mostrarGastos();
     saldo.actualizarSaldo(-gastoValue);
     saldoDiv.innerText = saldo.obtenerSaldo();
-
 });
 
 function editarGasto(index) {
@@ -139,7 +137,7 @@ function mostrarIngresos() {
                 <button class="editar-ingreso-btn" data-index="${ingreso.indexOriginal}">Editar</button>
                 <button class="eliminar-ingreso-btn" data-index="${ingreso.indexOriginal}">Eliminar</button>
             </li>`;
-    });
+});
 
     ingresosDiv.innerHTML += "</ul>";
 
@@ -166,21 +164,19 @@ function mostrarIngresos() {
     });
 }
 
-
-
 ingresoForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const ingresoValue = Number.parseInt(ingresoInput.value);
     const descripcionIngresoValue = descripcionIngresoInput.value;
     const categoriaIngresoValue = categoriaIngresoInput.value || "--";
-    const fechaIngresoValue = fechaIngresoInput.value || "sin fecha";  // Si no se ingresa fecha, asignar "nulo".
+    const fechaIngresoValue = fechaIngresoInput.value || "sin fecha";
 
     ingresos.registrarIngreso(ingresoValue, descripcionIngresoValue, fechaIngresoValue, categoriaIngresoValue);
 
     ingresoInput.value = "";
     descripcionIngresoInput.value = "";
-    fechaIngresoInput.value = ""; // Limpiar el campo de fecha.
+    fechaIngresoInput.value = "";
     categoriaIngresoInput.value = "";
 
     mostrarIngresos();

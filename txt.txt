@@ -1,0 +1,74 @@
+
+verCategoriaInput.addEventListener('change', function() {
+    mostrarIngresos()
+})
+
+function mostrarIngresos() {
+    const categoriaSeleccionada = verCategoriaInput.value;
+
+    const ingresosRegistrados = ingresos.obtenerIngresos();
+
+    // Filtrar ingresos según la categoría seleccionada y conservar el índice original
+    const ingresosFiltrados = ingresosRegistrados
+        .map((ingreso, indexOriginal) => ({ ...ingreso, indexOriginal }))
+        .filter((ingreso) => {
+            return categoriaSeleccionada === "Todos" || ingreso.categoria === categoriaSeleccionada;
+        });
+
+    // Reiniciar la lista
+    ingresosDiv.innerHTML = "<ul>";
+
+    // Mostrar los ingresos filtrados
+    ingresosFiltrados.forEach((ingreso) => {
+        ingresosDiv.innerHTML += `
+            <li>
+                - Bs: ${ingreso.valor} (${ingreso.descripcion}) (${ingreso.categoria === "nulo" ? "--" : ingreso.categoria}) (${ingreso.fecha === "nulo" ? "sin fecha" : ingreso.fecha})
+                <button class="editar-ingreso-btn" data-index="${ingreso.indexOriginal}">Editar</button>
+                <button class="eliminar-ingreso-btn" data-index="${ingreso.indexOriginal}">Eliminar</button>
+            </li>`;
+});
+
+    ingresosDiv.innerHTML += "</ul>";
+
+    // Configurar eventos para los botones de editar
+    const editarButtons = document.querySelectorAll(".editar-ingreso-btn");
+    editarButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const index = event.target.getAttribute("data-index");
+            editarIngreso(index);
+        });
+    });
+
+    // Configurar eventos para los botones de eliminar
+    const eliminarButtons = document.querySelectorAll(".eliminar-ingreso-btn");
+    eliminarButtons.forEach((button) => {
+        button.addEventListener("click", (event) => {
+            const index = event.target.getAttribute("data-index");
+            const ingresoEliminado = ingresos.obtenerIngresos()[index];
+            saldo.actualizarSaldo(-ingresoEliminado.valor);
+            ingresos.eliminarIngreso(index);
+            saldoDiv.innerText = saldo.obtenerSaldo();
+            mostrarIngresos(); // Refrescar la lista
+        });
+    });
+}
+
+ingresoForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const ingresoValue = Number.parseInt(ingresoInput.value);
+    const descripcionIngresoValue = descripcionIngresoInput.value;
+    const categoriaIngresoValue = categoriaIngresoInput.value || "--";
+    const fechaIngresoValue = fechaIngresoInput.value || "sin fecha";
+
+    ingresos.registrarIngreso(ingresoValue, descripcionIngresoValue, fechaIngresoValue, categoriaIngresoValue);
+
+    ingresoInput.value = "";
+    descripcionIngresoInput.value = "";
+    fechaIngresoInput.value = "";
+    categoriaIngresoInput.value = "";
+
+    mostrarIngresos();
+    saldo.actualizarSaldo(ingresoValue);
+    saldoDiv.innerText = saldo.obtenerSaldo();
+});
