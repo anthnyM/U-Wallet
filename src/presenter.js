@@ -3,198 +3,248 @@ import Gastos from "./Gastos";
 import Ingresos from "./Ingresos";
 import Saldo from "./Saldo";
 
+// Instancias
 const gastos = new Gastos();
 const ingresos = new Ingresos();
 const saldo = new Saldo();
 
-const gastoForm = document.querySelector("#gasto-form");
-const gastoInput = document.querySelector("#gasto");
-const descripcionGastoInput = document.querySelector("#descripcion-gasto");
-const categoriaGastoInput = document.querySelector("#categoria-gastos")
-const fechaGastoInput = document.querySelector("#fecha-gasto");  
-const gastosDiv = document.querySelector("#gastos-div");
-const verCategoriaInput1 = document.querySelector("#ver-categoria-gastos")
+// Elementos del DOM
+const elements = {
+    gastoForm: document.querySelector("#gasto-form"),
+    gastoInput: document.querySelector("#gasto"),
+    descripcionGastoInput: document.querySelector("#descripcion-gasto"),
+    categoriaGastoInput: document.querySelector("#categoria-gastos"),
+    fechaGastoInput: document.querySelector("#fecha-gasto"),
+    gastosDiv: document.querySelector("#gastos-div"),
+    verCategoriaGastoInput: document.querySelector("#ver-categoria-gastos"),
 
-const ingresoForm = document.querySelector("#ingreso-form");
-const ingresoInput = document.querySelector("#ingreso");
-const descripcionIngresoInput = document.querySelector("#descripcion-ingreso");
-const categoriaIngresoInput = document.querySelector("#categoria-ingresos")
-const fechaIngresoInput = document.querySelector("#fecha-ingreso"); 
-const ingresosDiv = document.querySelector("#ingresos-div");
-const verCategoriaInput = document.querySelector("#ver-categoria-ingresos")
+    ingresoForm: document.querySelector("#ingreso-form"),
+    ingresoInput: document.querySelector("#ingreso"),
+    descripcionIngresoInput: document.querySelector("#descripcion-ingreso"),
+    categoriaIngresoInput: document.querySelector("#categoria-ingresos"),
+    fechaIngresoInput: document.querySelector("#fecha-ingreso"),
+    ingresosDiv: document.querySelector("#ingresos-div"),
+    verCategoriaIngresoInput: document.querySelector("#ver-categoria-ingresos"),
 
+    saldoDiv: document.querySelector("#saldo-actual"),
+};
 
-const saldoDiv = document.querySelector("#saldo-actual");
+// Inicializar Eventos
+document.getElementById("login-form").addEventListener("submit", manejarLogin);
+elements.verCategoriaGastoInput.addEventListener("change", mostrarGastos);
+elements.verCategoriaIngresoInput.addEventListener("change", mostrarIngresos);
+elements.gastoForm.addEventListener("submit", registrarGasto);
+elements.ingresoForm.addEventListener("submit", registrarIngreso);
 
-document.getElementById('login-form').addEventListener('submit', function(event) {
+// Funciones de Login
+function manejarLogin(event) {
     event.preventDefault();
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-    if (username === 'admin' && password === 'password') {
-        document.getElementById('login-div').style.display = 'none'; 
-        document.getElementById('main').style.display = 'block'; 
+    if (esCredencialesValidas(username, password)) {
+        ocultarElemento("login-div");
+        mostrarElemento("main");
     } else {
-        document.getElementById('login-error').style.display = 'block'; 
+        mostrarElemento("login-error");
     }
-});
-
-verCategoriaInput1.addEventListener('change', function() {
-    mostrarGastos()
-})
-
-function mostrarGastos() {
-    const categoriaSeleccionada = verCategoriaInput1.value;
-
-    const gastosRegistrados = gastos.obtenerGastos();
-
-    const gastosFiltrados = gastosRegistrados
-        .map((gasto, indexOriginal) => ({ ...gasto, indexOriginal }))
-        .filter((gasto) => {
-            return categoriaSeleccionada === "Todos" || gasto.categoria === categoriaSeleccionada;
-        });
-
-    gastosDiv.innerHTML = "<ul>";
-
-    gastosFiltrados.forEach((gasto) => {
-        gastosDiv.innerHTML += `
-            <li>
-                - Bs: ${gasto.valor} (${gasto.descripcion}) (${gasto.categoria === "nulo" ? "--" : gasto.categoria}) (${gasto.fecha === "nulo" ? "sin fecha" : gasto.fecha})
-                <button class="editar-gasto-btn" data-index="${gasto.indexOriginal}">Editar</button>
-                <button class="eliminar-gasto-btn" data-index="${gasto.indexOriginal}">Eliminar</button>
-            </li>`;
-    });
-
-    gastosDiv.innerHTML += "</ul>";
-
-    // Configurar eventos para los botones de editar
-    const editarButtons = document.querySelectorAll(".editar-gasto-btn");
-    editarButtons.forEach((button) => {
-        button.addEventListener("click", (event) => {
-            const index = event.target.getAttribute("data-index");
-            editarGasto(index);
-        });
-    });
-
-    // Configurar eventos para los botones de eliminar
-    const eliminarButtons = document.querySelectorAll(".eliminar-gasto-btn");
-    eliminarButtons.forEach((button) => {
-        button.addEventListener("click", (event) => {
-            const index = event.target.getAttribute("data-index");
-            const gastoEliminado = gastos.obtenerGastos()[index];
-            saldo.actualizarSaldo(gastoEliminado.valor); // Revertir saldo por el gasto eliminado
-            gastos.eliminarGasto(index);
-            saldoDiv.innerText = saldo.obtenerSaldo();
-            mostrarGastos(); // Refrescar la lista
-        });
-    });
 }
 
+function esCredencialesValidas(username, password) {
+    return username === "admin" && password === "password";
+}
 
-gastoForm.addEventListener("submit", (event) => {
+// Funciones Utilitarias
+function ocultarElemento(elementId) {
+    document.getElementById(elementId).style.display = "none";
+}
+
+function mostrarElemento(elementId) {
+    document.getElementById(elementId).style.display = "block";
+}
+
+// Funciones de Gastos
+function registrarGasto(event) {
     event.preventDefault();
+    const nuevoGasto = obtenerDatosGasto();
 
-    const gastoValue = Number.parseInt(gastoInput.value);
-    const descripcionGastoValue = descripcionGastoInput.value;
-    const categoriaGastoValue = categoriaGastoInput.value || "--";
-    const fechaGastoValue = fechaGastoInput.value || "sin fecha";
+    gastos.registrarGasto(
+    nuevoGasto.valor,
+    nuevoGasto.descripcion,
+    nuevoGasto.fecha,
+    nuevoGasto.categoria
+);
 
-    gastos.registrarGasto(gastoValue, descripcionGastoValue, fechaGastoValue, categoriaGastoValue);
-
-    gastoInput.value = "";
-    descripcionGastoInput.value = "";
-    fechaGastoInput.value = "";
-    categoriaGastoInput.value = "";
-
+    limpiarFormularioGasto();
     mostrarGastos();
-    saldo.actualizarSaldo(-gastoValue);
-    saldoDiv.innerText = saldo.obtenerSaldo();
-});
+    actualizarSaldo(-nuevoGasto.valor);
+}
+
+function obtenerDatosGasto() {
+    return {
+    valor: Number.parseInt(elements.gastoInput.value),
+    descripcion: elements.descripcionGastoInput.value,
+    categoria: elements.categoriaGastoInput.value || "--",
+    fecha: elements.fechaGastoInput.value || "sin fecha",
+    };
+}
+
+function limpiarFormularioGasto() {
+    elements.gastoInput.value = "";
+    elements.descripcionGastoInput.value = "";
+    elements.fechaGastoInput.value = "";
+    elements.categoriaGastoInput.value = "";
+}
+
+function mostrarGastos() {
+    const categoriaSeleccionada = elements.verCategoriaGastoInput.value;
+    const gastosFiltrados = filtrarGastosPorCategoria(categoriaSeleccionada);
+
+    elements.gastosDiv.innerHTML = "<ul>";
+    gastosFiltrados.forEach((gasto) => {
+    elements.gastosDiv.innerHTML += crearElementoGastoHTML(gasto);
+    });
+    elements.gastosDiv.innerHTML += "</ul>";
+
+    configurarBotonesGasto();
+}
+
+function filtrarGastosPorCategoria(categoria) {
+    return gastos
+    .obtenerGastos()
+    .map((gasto, indexOriginal) => ({ ...gasto, indexOriginal }))
+    .filter((gasto) => categoria === "Todos" || gasto.categoria === categoria);
+}
+
+function crearElementoGastoHTML(gasto) {
+    return `
+    <li>
+        - Bs: ${gasto.valor} (${gasto.descripcion}) (${gasto.categoria}) (${gasto.fecha})
+        <button class="editar-gasto-btn" data-index="${gasto.indexOriginal}">Editar</button>
+        <button class="eliminar-gasto-btn" data-index="${gasto.indexOriginal}">Eliminar</button>
+    </li>`;
+}
+
+function configurarBotonesGasto() {
+    document.querySelectorAll(".editar-gasto-btn").forEach((button) => {
+    button.addEventListener("click", (event) => editarGasto(event.target.getAttribute("data-index")));
+    });
+
+    document.querySelectorAll(".eliminar-gasto-btn").forEach((button) => {
+    button.addEventListener("click", (event) => eliminarGasto(event.target.getAttribute("data-index")));
+    });
+}
 
 function editarGasto(index) {
     const gasto = gastos.obtenerGastos()[index];
+    elements.gastoInput.value = gasto.valor;
+    elements.descripcionGastoInput.value = gasto.descripcion;
+    elements.fechaGastoInput.value = gasto.fecha === "sin fecha" ? "" : gasto.fecha;
 
-    gastoInput.value = gasto.valor;
-    descripcionGastoInput.value = gasto.descripcion;
-    fechaGastoInput.value = gasto.fecha === "sin fecha" ? "" : gasto.fecha;  // Si es "sin fecha", dejamos el campo vacío.
-
-    // Eliminar el gasto de la lista antes de editarlo
     gastos.eliminarGasto(index);
-    saldo.actualizarSaldo(gasto.valor);  // Revertir el saldo por el valor anterior
+    actualizarSaldo(gasto.valor);
+    mostrarGastos();
 }
 
-//------------------------------------- INGRESOS ---------------------------------------------------------
+function eliminarGasto(index) {
+    const gastoEliminado = gastos.obtenerGastos()[index];
+    gastos.eliminarGasto(index);
+    actualizarSaldo(gastoEliminado.valor);
+    mostrarGastos();
+}
 
-verCategoriaInput.addEventListener('change', function() {
-    mostrarIngresos()
-})
+// Funciones de Ingresos
+function registrarIngreso(event) {
+    event.preventDefault();
+    const nuevoIngreso = obtenerDatosIngreso();
+
+    ingresos.registrarIngreso(
+    nuevoIngreso.valor,
+    nuevoIngreso.descripcion,
+    nuevoIngreso.fecha,
+    nuevoIngreso.categoria
+    );
+
+    limpiarFormularioIngreso();
+    mostrarIngresos();
+    actualizarSaldo(nuevoIngreso.valor);
+}
+
+function obtenerDatosIngreso() {
+    return {
+    valor: Number.parseInt(elements.ingresoInput.value),
+    descripcion: elements.descripcionIngresoInput.value,
+    categoria: elements.categoriaIngresoInput.value || "--",
+    fecha: elements.fechaIngresoInput.value || "sin fecha",
+    };
+}
+
+function limpiarFormularioIngreso() {
+    elements.ingresoInput.value = "";
+    elements.descripcionIngresoInput.value = "";
+    elements.fechaIngresoInput.value = "";
+    elements.categoriaIngresoInput.value = "";
+}
 
 function mostrarIngresos() {
-    const categoriaSeleccionada = verCategoriaInput.value;
+    const categoriaSeleccionada = elements.verCategoriaIngresoInput.value;
+    const ingresosFiltrados = filtrarIngresosPorCategoria(categoriaSeleccionada);
 
-    const ingresosRegistrados = ingresos.obtenerIngresos();
-
-    // Filtrar ingresos según la categoría seleccionada y conservar el índice original
-    const ingresosFiltrados = ingresosRegistrados
-        .map((ingreso, indexOriginal) => ({ ...ingreso, indexOriginal }))
-        .filter((ingreso) => {
-            return categoriaSeleccionada === "Todos" || ingreso.categoria === categoriaSeleccionada;
-        });
-
-    // Reiniciar la lista
-    ingresosDiv.innerHTML = "<ul>";
-
-    // Mostrar los ingresos filtrados
+    elements.ingresosDiv.innerHTML = "<ul>";
     ingresosFiltrados.forEach((ingreso) => {
-        ingresosDiv.innerHTML += `
-            <li>
-                - Bs: ${ingreso.valor} (${ingreso.descripcion}) (${ingreso.categoria === "nulo" ? "--" : ingreso.categoria}) (${ingreso.fecha === "nulo" ? "sin fecha" : ingreso.fecha})
-                <button class="editar-ingreso-btn" data-index="${ingreso.indexOriginal}">Editar</button>
-                <button class="eliminar-ingreso-btn" data-index="${ingreso.indexOriginal}">Eliminar</button>
-            </li>`;
-});
+    elements.ingresosDiv.innerHTML += crearElementoIngresoHTML(ingreso);
+    });
+    elements.ingresosDiv.innerHTML += "</ul>";
 
-    ingresosDiv.innerHTML += "</ul>";
+    configurarBotonesIngreso();
+}
 
-    // Configurar eventos para los botones de editar
-    const editarButtons = document.querySelectorAll(".editar-ingreso-btn");
-    editarButtons.forEach((button) => {
-        button.addEventListener("click", (event) => {
-            const index = event.target.getAttribute("data-index");
-            editarIngreso(index);
-        });
+function filtrarIngresosPorCategoria(categoria) {
+    return ingresos
+    .obtenerIngresos()
+    .map((ingreso, indexOriginal) => ({ ...ingreso, indexOriginal }))
+    .filter((ingreso) => categoria === "Todos" || ingreso.categoria === categoria);
+}
+
+function crearElementoIngresoHTML(ingreso) {
+    return `
+    <li>
+        - Bs: ${ingreso.valor} (${ingreso.descripcion}) (${ingreso.categoria}) (${ingreso.fecha})
+        <button class="editar-ingreso-btn" data-index="${ingreso.indexOriginal}">Editar</button>
+        <button class="eliminar-ingreso-btn" data-index="${ingreso.indexOriginal}">Eliminar</button>
+    </li>`;
+}
+
+function configurarBotonesIngreso() {
+    document.querySelectorAll(".editar-ingreso-btn").forEach((button) => {
+    button.addEventListener("click", (event) => editarIngreso(event.target.getAttribute("data-index")));
     });
 
-    // Configurar eventos para los botones de eliminar
-    const eliminarButtons = document.querySelectorAll(".eliminar-ingreso-btn");
-    eliminarButtons.forEach((button) => {
-        button.addEventListener("click", (event) => {
-            const index = event.target.getAttribute("data-index");
-            const ingresoEliminado = ingresos.obtenerIngresos()[index];
-            saldo.actualizarSaldo(-ingresoEliminado.valor);
-            ingresos.eliminarIngreso(index);
-            saldoDiv.innerText = saldo.obtenerSaldo();
-            mostrarIngresos(); // Refrescar la lista
-        });
+    document.querySelectorAll(".eliminar-ingreso-btn").forEach((button) => {
+    button.addEventListener("click", (event) => eliminarIngreso(event.target.getAttribute("data-index")));
     });
 }
 
-ingresoForm.addEventListener("submit", (event) => {
-    event.preventDefault();
+function editarIngreso(index) {
+    const ingreso = ingresos.obtenerIngresos()[index];
+    elements.ingresoInput.value = ingreso.valor;
+    elements.descripcionIngresoInput.value = ingreso.descripcion;
+    elements.fechaIngresoInput.value = ingreso.fecha === "sin fecha" ? "" : ingreso.fecha;
 
-    const ingresoValue = Number.parseInt(ingresoInput.value);
-    const descripcionIngresoValue = descripcionIngresoInput.value;
-    const categoriaIngresoValue = categoriaIngresoInput.value || "--";
-    const fechaIngresoValue = fechaIngresoInput.value || "sin fecha";
-
-    ingresos.registrarIngreso(ingresoValue, descripcionIngresoValue, fechaIngresoValue, categoriaIngresoValue);
-
-    ingresoInput.value = "";
-    descripcionIngresoInput.value = "";
-    fechaIngresoInput.value = "";
-    categoriaIngresoInput.value = "";
-
+    ingresos.eliminarIngreso(index);
+    actualizarSaldo(-ingreso.valor);
     mostrarIngresos();
-    saldo.actualizarSaldo(ingresoValue);
-    saldoDiv.innerText = saldo.obtenerSaldo();
-});
+}
+
+function eliminarIngreso(index) {
+    const ingresoEliminado = ingresos.obtenerIngresos()[index];
+    ingresos.eliminarIngreso(index);
+    actualizarSaldo(-ingresoEliminado.valor);
+    mostrarIngresos();
+}
+
+// Función de Saldo
+function actualizarSaldo(cambio) {
+    saldo.actualizarSaldo(cambio);
+    elements.saldoDiv.innerText = saldo.obtenerSaldo();
+}

@@ -116,7 +116,7 @@ it.skip("Edita los datos al seleccionar la opcion Editar en ingresos", () =>{
 
 });
 
-it.skip("Edita los datos al seleccionar la opcion Editar en gastos", () =>{
+it("Edita los datos al seleccionar la opcion Editar en gastos", () =>{
     cy.visit("/");
     cy.get("#username").type("admin");
     cy.get("#password").type("password");
@@ -141,7 +141,7 @@ it.skip("Edita los datos al seleccionar la opcion Editar en gastos", () =>{
 });
 
 
-it.skip("Elimina un ingreso al seleccionar la opcion Eliminar", () =>{
+it("Elimina un ingreso al seleccionar la opcion Eliminar", () =>{
     cy.visit("/");
     cy.get("#username").type("admin");
     cy.get("#password").type("password");
@@ -157,7 +157,7 @@ it.skip("Elimina un ingreso al seleccionar la opcion Eliminar", () =>{
 
 
 
-it.skip("Muestra el ingreso registrado con fecha", () => {
+it("Muestra el ingreso registrado con fecha", () => {
     
     cy.visit("/");
     cy.get("#username").type("admin");
@@ -181,7 +181,7 @@ it.skip("Muestra el ingreso registrado con fecha", () => {
     cy.get("#ingresos-div").should("contain", "sin fecha");
 });
 
-it.skip("Muestra el gasto registrado con fecha", () => {
+it("Muestra el gasto registrado con fecha", () => {
     
     cy.visit("/");
     cy.get("#username").type("admin");
