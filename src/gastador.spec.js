@@ -34,10 +34,15 @@ describe("Eliminar gasto", () => {
     it("Deberia eliminar el gasto registrado", ()=>{
         gastos.registrarGasto( gasto1.valor, gasto1.descripcion);
         gastos.registrarGasto( gasto2.valor, gasto2.descripcion);
-        gastos.eliminarGasto(0);
+        expect(gastos.eliminarGasto(0)).toEqual(1);
         const gastosRegistrados = gastos.obtenerGastos();
         expect(gastosRegistrados).toEqual([gasto2]);
     });
+    it("Deberia retornar 0 si un indice esta out of bounds", () => {
+        gastos.registrarGasto( gasto1.valor, gasto1.descripcion);
+        gastos.registrarGasto( gasto2.valor, gasto2.descripcion);
+        expect(gastos.eliminarGasto(100)).toEqual(0)
+    })
 
 
 });

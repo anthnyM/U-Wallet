@@ -15,7 +15,9 @@ class Gastos {
     eliminarGasto(index){
         if (index >= 0 && index < this.gastos.length) {
             this.gastos.splice(index, 1);
+            return 1
         }
+        return 0
     }
 
 }
